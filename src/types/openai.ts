@@ -16,6 +16,7 @@ export type ChatCompletionsRequest = {
   model?: string;
   messages?: ChatMessage[];
   stream?: boolean;
+  system_prompt?: string;
 };
 
 export type OpenAIError = {

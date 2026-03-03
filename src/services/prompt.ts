@@ -8,8 +8,14 @@ function contentToString(content: ChatMessage["content"]): string {
   return content.map((part) => part.text).join("\n");
 }
 
-export function buildPrompt(messages: ChatMessage[]): string {
+export function buildPrompt(messages: ChatMessage[], systemPrompt?: string): string {
   const lines: string[] = [];
+
+  if (systemPrompt && systemPrompt.trim().length > 0) {
+    lines.push("[SYSTEM]");
+    lines.push(systemPrompt);
+    lines.push("");
+  }
 
   for (const message of messages) {
     lines.push(`[${message.role.toUpperCase()}]`);

@@ -8,6 +8,7 @@ type ValidationSuccess = {
     model?: string;
     messages: ChatMessage[];
     stream: boolean;
+    systemPrompt?: string;
   };
 };
 
@@ -98,6 +99,19 @@ export function validateChatBody(body: unknown): ValidationResult {
   }
 
   const model = typeof reqBody.model === "string" && reqBody.model.trim().length > 0 ? reqBody.model.trim() : undefined;
+  const hasSystemPrompt = Object.prototype.hasOwnProperty.call(reqBody, "system_prompt");
+  if (hasSystemPrompt && typeof reqBody.system_prompt !== "string") {
+    return {
+      valid: false,
+      message: "system_prompt must be a string",
+      param: "system_prompt",
+    };
+  }
+
+  const systemPrompt =
+    typeof reqBody.system_prompt === "string" && reqBody.system_prompt.trim().length > 0
+      ? reqBody.system_prompt.trim()
+      : undefined;
 
   return {
     valid: true,
@@ -105,6 +119,7 @@ export function validateChatBody(body: unknown): ValidationResult {
       model,
       messages,
       stream,
+      systemPrompt,
     },
   };
 }

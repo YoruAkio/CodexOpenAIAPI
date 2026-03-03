@@ -27,7 +27,7 @@ chatCompletionsRoutes.post("/v1/chat/completions", async (c) => {
     return errorResponse(c, 404, `The model '${model}' does not exist`, "invalid_request_error", "model", "model_not_found");
   }
 
-  const prompt = buildPrompt(validation.value.messages);
+  const prompt = buildPrompt(validation.value.messages, validation.value.systemPrompt ?? env.systemPrompt);
 
   let content: string;
   try {
